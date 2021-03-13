@@ -1,0 +1,79 @@
+package bol.com.interview.kahala.dao;
+
+import bol.com.interview.kahala.model.BigPit;
+import bol.com.interview.kahala.model.Board;
+import bol.com.interview.kahala.model.Pit;
+import bol.com.interview.kahala.model.Player;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class BoardDao implements IBoardDao{
+
+    private Map<Integer, BigPit> pnbp = new HashMap<>();
+    private Map<Integer, List<Pit>> pnp = new HashMap<>();
+    private static int NUMBER_OF_STONES = 6;
+    private static int INITIAL_SCORE = 0;
+
+    @Override
+    public Board initializeBoard() {
+        Board board = Board.getInstance();
+        BigPit bigPit1 = new BigPit();
+        BigPit bigPit2 = new BigPit();
+        bigPit1.setScore(INITIAL_SCORE);
+        bigPit2.setScore(INITIAL_SCORE);
+
+        board.setNorthKahala(bigPit1);
+        board.setSouthKahala(bigPit2);
+
+        List<Pit> pits = new ArrayList<>();
+        List<Pit> reverse = new ArrayList<>();
+
+        for (int i = 0; i < NUMBER_OF_STONES; i++) {
+            pits.add(new Pit(i, NUMBER_OF_STONES));
+            reverse.add(new Pit(i, NUMBER_OF_STONES));
+        }
+
+        board.setSouthPits(reverse);
+        board.setNorthPits(pits);
+
+        board.setWinner(false);
+        mapPlayersWithPits(board);
+        mapPlayersWithBigPits(board);
+        return board;
+    }
+
+    @Override
+    public Map<Integer, BigPit> getBigPit() {
+        return pnbp;
+    }
+
+    @Override
+    public Map<Integer, List<Pit>> getPitList() {
+        return pnp;
+    }
+
+    private void mapPlayersWithPits(Board board) {
+        // pnb stands for players and pits!
+        pnp.put(0, board.getNorthPits());
+        pnp.put(1, board.getSouthPits());
+    }
+
+    private void mapPlayersWithBigPits(Board board) {
+        // pnb stands for players and big pits!
+        pnbp.put(0, board.getNorthKahala());
+        pnbp.put(1, board.getSouthKahala());
+    }
+
+    public Map<Integer, BigPit> getPnbp() {
+        return pnbp;
+    }
+
+    public Map<Integer, List<Pit>> getPnp() {
+        return pnp;
+    }
+}
