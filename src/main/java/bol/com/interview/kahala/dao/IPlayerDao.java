@@ -7,6 +7,8 @@ public interface IPlayerDao {
     public Player playFirst();
     public Player getPlayNext();
     public void setPlayNext(Player player);
-    public Player[] getPlayer();
+    public Player[] getPlayers();
     public Winner getWinner();
+
+    Player getPlayerById(int player);
 }

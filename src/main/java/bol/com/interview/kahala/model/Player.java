@@ -9,7 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Player {
 
-    private int player;
-    //private String name;
+    //private int player;
+    private int id;
+
 
 }

@@ -3,7 +3,6 @@ package bol.com.interview.kahala.dao;
 import bol.com.interview.kahala.model.Board;
 import bol.com.interview.kahala.model.Player;
 import bol.com.interview.kahala.model.Winner;
-import bol.com.interview.kahala.utils.Utils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -13,7 +12,7 @@ public class PlayerDao implements IPlayerDao{
     @Override
     public Player playFirst() {
         int r = (int) Math.round(Math.random());
-        Player player = getPlayer()[r];
+        Player player = getPlayers()[r];
         setNextPlayer(player);
         return player;
     }
@@ -29,7 +28,7 @@ public class PlayerDao implements IPlayerDao{
     }
 
     @Override
-    public Player[] getPlayer(){
+    public Player[] getPlayers(){
         Player[] p = new Player[2];
         p[0] = new Player(0);
         p[1] = new Player(1);
@@ -37,11 +36,15 @@ public class PlayerDao implements IPlayerDao{
     }
 
     @Override
+    public Player getPlayerById(int id){
+        return getPlayers()[id];
+    }
+
+    @Override
     public Winner getWinner() {
         Board board = Board.getInstance();
-        boolean a = Utils.allPitsEmpty(board.getNorthPits());
-        boolean b = Utils.allPitsEmpty(board.getSouthPits());
-        if(a||b){
+        if(board.emptyPitExists()){
+            board.calculateScore();
             int player1 = board.getNorthKahala().getScore();
             int player2 = board.getSouthKahala().getScore();
             String message = "";
@@ -51,12 +54,13 @@ public class PlayerDao implements IPlayerDao{
             }
             else if(player1 > player2){
                 message= "Player 1 wins";
-                winner = getPlayer()[0];
+                winner = getPlayers()[0];
             }
             else {
                 message= "Player 2 wins";
-                winner = getPlayer()[1];
+                winner = getPlayers()[1];
             }
+            //board.emptyAllPits();
             return new Winner(message, winner);
         }
         return null;

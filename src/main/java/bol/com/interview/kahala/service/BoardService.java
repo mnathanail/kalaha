@@ -1,14 +1,20 @@
 package bol.com.interview.kahala.service;
 
 import bol.com.interview.kahala.dao.IBoardDao;
+import bol.com.interview.kahala.dao.IPlayerDao;
 import bol.com.interview.kahala.model.Board;
-import bol.com.interview.kahala.utils.Utils;
+import bol.com.interview.kahala.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BoardService implements IBoardService{
 
     @Autowired
     private IBoardDao boardDao;
+
+    @Autowired
+    private IPlayerDao playerDao;
 
     @Override
     public Board initializeBoard() {
@@ -18,6 +24,8 @@ public class BoardService implements IBoardService{
     @Override
     public Board sowStones(int pit, int player) {
         Board board = Board.getInstance();
+        Player pd = playerDao.getPlayerById(player);
+        int playerId = pd.getId();
         int nextPit = pit;
         int last = 0;
         int pitValue = 0;
@@ -29,15 +37,15 @@ public class BoardService implements IBoardService{
             throw custom exception, click on another number! :)
         }*/
         boardDao.getPitList().get(player).get(pit).setValue(0);
-        int currentPlayer = player;
+        int currentPlayer = playerId;
 
         while (stones > 0) {
             nextPit--;
             // means will sow on BigPit(Kahala)
             if (nextPit < 0) {
                 // owns it?
-                if (currentPlayer == player) {
-                    updateKahalaScore(player);
+                if (currentPlayer == playerId) {
+                    updateKahalaScore(playerId);
                     stones--;
                 }
                 // if was last stone, break
@@ -59,41 +67,41 @@ public class BoardService implements IBoardService{
             //play again
             playAgain = true;
         }
-        if (currentPlayer == player && last != -1) {
+        if (currentPlayer == playerId && last != -1) {
             int opponent = 0;
             int opponentStones = 0;
             int getCurrentPlayerKahala = 0;
-            pitValue = boardDao.getPitList().get(player).get(last).getValue();
+            pitValue = boardDao.getPitList().get(playerId).get(last).getValue();
             if (pitValue == 1) {
                 // who is the opponent
                 opponent = currentPlayer == 0 ? 1 : 0;
                 // get their stones
                 opponentStones = boardDao.getPitList().get(opponent).get(5 - last).getValue();
                 // get and set BigPit (Kahala) score
-                getCurrentPlayerKahala = boardDao.getBigPit().get(player).getScore();
-                boardDao.getBigPit().get(player).setScore(getCurrentPlayerKahala + opponentStones + 1);
+                getCurrentPlayerKahala = boardDao.getBigPit().get(playerId).getScore();
+                boardDao.getBigPit().get(playerId).setScore(getCurrentPlayerKahala + opponentStones + 1);
                 // set cell to 0
                 boardDao.getPitList().get(opponent).get(5 - last).setValue(0);
                 // and for current
-                boardDao.getPitList().get(player).get(last).setValue(0);
+                boardDao.getPitList().get(playerId).get(last).setValue(0);
                 // play again
                 playAgain = true;
             }
         }
 
         if (playAgain) {
-            nextPlayer = player;
+            nextPlayer = playerId;
         }
         else{
-            nextPlayer = player == 0 ? 1 : 0;
+            nextPlayer = playerId == 0 ? 1 : 0;
         }
 
-        playerDao.setPlayNext(playerDao.getPlayer()[nextPlayer]);
-        boolean haveWinner = checkIfAnyAreaIsEmpty(board);
+        playerDao.setPlayNext(playerDao.getPlayerById(nextPlayer));
+        boolean haveWinner = board.emptyPitExists();
 
         if(haveWinner){
             board.setWinner(true);
-            Utils.updateBoardWin(board);
+            board.emptyAllPits();
         }
 
         return board;
@@ -102,14 +110,6 @@ public class BoardService implements IBoardService{
     private void updateKahalaScore(int player){
         int kahalaValue = boardDao.getBigPit().get(player).getScore();
         boardDao.getBigPit().get(player).setScore(kahalaValue + 1);
-    }
-
-    private boolean checkIfAnyAreaIsEmpty(Board board){
-        boolean a = Utils.allPitsEmpty(board.getNorthPits());
-        boolean b = Utils.allPitsEmpty(board.getSouthPits());
-        boolean c = a||b;
-        System.out.println("It works:" + a + " " + b + " result " +  c);
-        return a || b;
     }
 
 }
