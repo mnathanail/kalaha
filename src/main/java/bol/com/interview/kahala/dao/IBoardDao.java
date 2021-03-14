@@ -12,4 +12,5 @@ public interface IBoardDao {
     public Board initializeBoard();
     public Map<Integer, BigPit> getBigPit();
     public Map<Integer, List<Pit>> getPitList();
+    public boolean haveWinner(Board board);
 }

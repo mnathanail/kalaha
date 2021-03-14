@@ -44,7 +44,7 @@ public class PlayerDao implements IPlayerDao{
     public Winner getWinner() {
         Board board = Board.getInstance();
         if(board.emptyPitExists()){
-            board.calculateScore();
+            //board.calculateScore(board);
             int player1 = board.getNorthKahala().getScore();
             int player2 = board.getSouthKahala().getScore();
             String message = "";
@@ -60,7 +60,7 @@ public class PlayerDao implements IPlayerDao{
                 message= "Player 2 wins";
                 winner = getPlayers()[1];
             }
-            //board.emptyAllPits();
+
             return new Winner(message, winner);
         }
         return null;

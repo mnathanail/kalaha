@@ -1,14 +1,10 @@
 package bol.com.interview.kahala.model;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Scope;
 
-import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,6 +19,7 @@ public class Board {
     private List<Pit> southPits;
     private boolean winner;
 
+
     public void calculateScore(){
         int count1 = northPits.stream().mapToInt(Pit::getValue).sum();
         int count2 = southPits.stream().mapToInt(Pit::getValue).sum();
@@ -33,8 +30,16 @@ public class Board {
     }
 
     public void emptyAllPits() {
-        northPits.stream().peek(e -> e.setValue(0));
-        southPits.stream().peek(e -> e.setValue(0));
+        emptyNorthPits();
+        emptySouthPits();
+    }
+
+    private List<Pit> emptyNorthPits(){
+        return northPits.stream().peek(e -> e.setValue(0)).collect(Collectors.toList());
+    }
+
+    private List<Pit> emptySouthPits(){
+        return southPits.stream().peek(e -> e.setValue(0)).collect(Collectors.toList());
     }
 
     public boolean emptyPitExists() {

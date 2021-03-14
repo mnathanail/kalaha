@@ -30,16 +30,16 @@ public class BoardDao implements IBoardDao{
         board.setNorthKahala(bigPit1);
         board.setSouthKahala(bigPit2);
 
-        List<Pit> pits = new ArrayList<>();
-        List<Pit> reverse = new ArrayList<>();
+        List<Pit> northPits = new ArrayList<>();
+        List<Pit> southPits = new ArrayList<>();
 
         for (int i = 0; i < NUMBER_OF_STONES; i++) {
-            pits.add(new Pit(i, NUMBER_OF_STONES));
-            reverse.add(new Pit(i, NUMBER_OF_STONES));
+            northPits.add(new Pit(i, NUMBER_OF_STONES));
+            southPits.add(new Pit(i, NUMBER_OF_STONES));
         }
 
-        board.setSouthPits(reverse);
-        board.setNorthPits(pits);
+        board.setNorthPits(northPits);
+        board.setSouthPits(southPits);
 
         board.setWinner(false);
         mapPlayersWithPits(board);
@@ -75,5 +75,9 @@ public class BoardDao implements IBoardDao{
 
     public Map<Integer, List<Pit>> getPnp() {
         return pnp;
+    }
+
+    public boolean haveWinner(Board board){
+        return board.emptyPitExists();
     }
 }

@@ -12,9 +12,13 @@ import bol.com.interview.kahala.service.IPlayerService;
 import bol.com.interview.kahala.service.PlayerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
@@ -24,6 +28,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import javax.validation.ConstraintViolationException;
+import java.util.Collections;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,6 +42,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@ImportAutoConfiguration(ControllerAdvisor.class)
 class KahalaControllerTest {
 
     private MockMvc mvc;
@@ -91,13 +103,33 @@ class KahalaControllerTest {
 
     @Test
     void sowMissingParameter() throws Exception {
-        given(boardService.sowStones(1,0)).willReturn(new Board());
+        /*given(boardService.sowStones(1,0)).willReturn(new Board());*/
         MockHttpServletResponse response = mvc.perform(get("/sow-stones")
                 .param("pit", "1")
         )
                 .andReturn().getResponse();
         assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
-        // assertEquals(response.getStatus(), "Required parameter player is missing");
+    }
+
+    @Test
+    void sowMissingParameterMessage() throws Exception {
+        /*given(boardService.sowStones(1,0)).willReturn(new Board());*/
+        MockHttpServletResponse response = mvc.perform(get("/sow-stones")
+                .param("pit", "1")
+        )
+                .andReturn().getResponse();
+        assertEquals(response.getContentAsString(), "{\"value\":400,\"name\":\"MissingServletRequestParameterException\",\"message\":\"Required parameter player is missing\"}");
+    }
+
+    @Test
+    void sowMethodArgumentTypeMismatchException() throws Exception {
+        /*given(boardService.sowStones(1,1)).willReturn(new Board());*/
+        MockHttpServletResponse response = mvc.perform(get("/sow-stones")
+                .param("pit", "1")
+                .param("player", "3ABC")
+        ).andReturn().getResponse();
+        System.out.println(response);
+        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
     }
 
     @Test

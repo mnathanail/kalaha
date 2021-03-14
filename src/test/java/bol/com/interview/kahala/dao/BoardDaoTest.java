@@ -40,4 +40,18 @@ class BoardDaoTest {
         assertEquals(pits,bd.getPnp());
     }
 
+    @Test
+    void haveWinner() {
+        Board board = bd.initializeBoard();
+        boolean hw = bd.haveWinner(board);
+        assertFalse(hw);
+    }
+
+    @Test
+    void haveWinnerTrue() {
+        Board board = bd.initializeBoard();
+        board.emptyAllPits();
+        boolean hw = bd.haveWinner(board);
+        assertTrue(hw);
+    }
 }

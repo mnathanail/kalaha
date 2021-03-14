@@ -25,28 +25,58 @@ class PlayerDaoTest {
     }
 
     @Test
-    void getPlayNext() {
+    void playFirstType() {
+        Player resp = pd.playFirst();
+        assertTrue(resp instanceof Player);
+    }
+
+    @Test
+    void getPlayNextNotNull() {
         pd.setNextPlayer(new Player(1));
         Player resp = pd.getNextPlayer();
         assertNotNull(resp);
-        assertTrue(resp.getId()==1);
+    }
+
+    @Test
+    void getPlayNextEquals() {
+        pd.setNextPlayer(new Player(1));
+        Player resp = pd.getNextPlayer();
+        assertEquals(resp.getId(), 1);
     }
 
     @Test
     void setPlayNext() {
+        pd.setNextPlayer(new Player(0));
+        Player resp = pd.getNextPlayer();
+        assertNotNull(resp);
     }
 
     @Test
-    void getPlayers() {
+    void getPlayersType() {
         Player[] resp = pd.getPlayers();
         assertTrue(resp[0] instanceof Player);
-        assertTrue(resp[1] instanceof Player);
-        assertTrue(resp[0].getId()==0 && resp[1].getId() == 1);
-        assertTrue(resp.length==2);
     }
 
     @Test
-    void getWinner() {
+    void getPlayersNotNull() {
+        Player[] resp = pd.getPlayers();
+        assertNotNull(resp[1]);
+    }
+
+    @Test
+    void getPlayersId() {
+        Player[] resp = pd.getPlayers();
+        assertTrue(resp[0].getId()==0 && resp[1].getId() == 1);
+    }
+
+    @Test
+    void getPlayersLength() {
+        Player[] resp = pd.getPlayers();
+        assertEquals(resp.length, 2);
+    }
+
+    @Test
+    void getWinnerPlayer1() {
         Board board = Board.getInstance();
         List<Pit> pits = new ArrayList<>();
         List<Pit> reverse = new ArrayList<>();
@@ -66,5 +96,85 @@ class PlayerDaoTest {
         Winner resp = pd.getWinner();
         assertEquals(resp.getMessage(), "Player 1 wins");
         assertEquals(resp.getWinner(), new Player(0));
+    }
+
+    @Test
+    void getWinnerPlayer2() {
+        Board board = Board.getInstance();
+        List<Pit> pits = new ArrayList<>();
+        List<Pit> reverse = new ArrayList<>();
+
+        for (int i = 0; i < 6; i++) {
+            pits.add(new Pit(i, 0));
+            reverse.add(new Pit(i, 0));
+        }
+        board.setNorthPits(pits);
+        board.setSouthPits(reverse);
+        BigPit bigPit1 = new BigPit();
+        bigPit1.setScore(22);
+        BigPit bigPit2 = new BigPit();
+        bigPit2.setScore(50);
+        board.setNorthKahala(bigPit1);
+        board.setSouthKahala(bigPit2);
+        Winner resp = pd.getWinner();
+        assertEquals(resp.getMessage(), "Player 2 wins");
+        assertEquals(resp.getWinner(), new Player(1));
+    }
+
+    @Test
+    void getWinnerTie() {
+        Board board = Board.getInstance();
+        List<Pit> pits = new ArrayList<>();
+        List<Pit> reverse = new ArrayList<>();
+
+        for (int i = 0; i < 6; i++) {
+            pits.add(new Pit(i, 0));
+            reverse.add(new Pit(i, 0));
+        }
+        board.setNorthPits(pits);
+        board.setSouthPits(reverse);
+        BigPit bigPit1 = new BigPit();
+        bigPit1.setScore(36);
+        BigPit bigPit2 = new BigPit();
+        bigPit2.setScore(36);
+        board.setNorthKahala(bigPit1);
+        board.setSouthKahala(bigPit2);
+        Winner resp = pd.getWinner();
+        assertEquals(resp.getMessage(), "Tie!");
+        assertEquals(resp.getWinner(), null);
+    }
+
+    @Test
+    void getNoWinner() {
+        Board board = Board.getInstance();
+        List<Pit> pits = new ArrayList<>();
+        List<Pit> reverse = new ArrayList<>();
+
+        for (int i = 0; i < 6; i++) {
+            pits.add(new Pit(i, 6));
+            reverse.add(new Pit(i, 6));
+        }
+        board.setNorthPits(pits);
+        board.setSouthPits(reverse);
+        BigPit bigPit1 = new BigPit();
+        bigPit1.setScore(36);
+        BigPit bigPit2 = new BigPit();
+        bigPit2.setScore(36);
+        board.setNorthKahala(bigPit1);
+        board.setSouthKahala(bigPit2);
+        Winner resp = pd.getWinner();
+        assertNull(resp);
+    }
+
+    @Test
+    void getPlayerByIdPlayer1() {
+        Player[] resp = pd.getPlayers();
+        assertNotNull(resp[0]);
+    }
+
+    @Test
+    void getPlayerByIdPlayer2() {
+        Player[] resp = pd.getPlayers();
+        assertNotNull(resp[1]);
     }
 }

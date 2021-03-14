@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Validated
 @RestController
@@ -42,8 +46,8 @@ public class KahalaController {
 
     @GetMapping("/sow-stones")
     @ResponseBody
-    public Board sow(@RequestParam("pit") @Min(0) @Max(5) int pit,
-                     @RequestParam("player") @Min(0) @Max(1) int player ){
+    public Board sow(@Min(value = 0) @Max(value = 5)  @RequestParam(value = "pit", required = true) int pit,
+                     @Min(value = 0) @Max(value = 1)  @RequestParam(value = "player", required = true) int player ){
         return boardService.sowStones(pit, player);
     }
 

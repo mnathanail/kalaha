@@ -4,6 +4,7 @@ import bol.com.interview.kahala.dao.IBoardDao;
 import bol.com.interview.kahala.dao.IPlayerDao;
 import bol.com.interview.kahala.model.Board;
 import bol.com.interview.kahala.model.Player;
+import ch.qos.logback.core.joran.event.BodyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +33,7 @@ public class BoardService implements IBoardService{
         boolean playAgain = false;
         int nextPlayer = 0;
         int stones = boardDao.getPitList().get(player).get(pit).getValue();
-        /*if(stones <=0){
-            throw new NotFoundException();
-            throw custom exception, click on another number! :)
-        }*/
+
         boardDao.getPitList().get(player).get(pit).setValue(0);
         int currentPlayer = playerId;
 
@@ -97,15 +95,17 @@ public class BoardService implements IBoardService{
         }
 
         playerDao.setPlayNext(playerDao.getPlayerById(nextPlayer));
-        boolean haveWinner = board.emptyPitExists();
+        boolean haveWinner = boardDao.haveWinner(board);
 
         if(haveWinner){
             board.setWinner(true);
+            board.calculateScore();
             board.emptyAllPits();
         }
 
         return board;
     }
+
 
     private void updateKahalaScore(int player){
         int kahalaValue = boardDao.getBigPit().get(player).getScore();
