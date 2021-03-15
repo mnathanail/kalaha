@@ -53,7 +53,7 @@ class BoardServiceTest {
 
     @Test
     void sowStones() {
-        Board response = Board.getInstance();
+        Board board = Board.getInstance();
 
         List<Pit> northPits = new ArrayList<>();
         List<Pit> southPits = new ArrayList<>();
@@ -67,19 +67,19 @@ class BoardServiceTest {
         Map<Integer, List<Pit>> pnp = new HashMap<>();
         pnp.put(0, northPits);
         pnp.put(1, southPits);
-        response.setSouthPits(southPits);
-        response.setNorthPits(northPits);
+        board.setSouthPits(southPits);
+        board.setNorthPits(northPits);
         when(boardDao.getPitList()).thenReturn(pnp);
         when(playerDao.getPlayerById(0)).thenReturn(new Player(0));
         when(boardDao.getBigPit()).thenReturn(pnbp);
-        when(boardDao.haveWinner(response)).thenReturn(false);
-        Board response1 = boardService.sowStones(1, 0);
-        assertEquals(response1, Board.getInstance());
+        when(boardDao.haveWinner(board)).thenReturn(false);
+        Board response = boardService.sowStones(1, 0);
+        assertEquals(response, Board.getInstance());
     }
 
     @Test
     void sowStonesWithWinner() {
-        Board response = Board.getInstance();
+        Board board = Board.getInstance();
 
         List<Pit> northPits = new ArrayList<>();
         List<Pit> southPits = new ArrayList<>();
@@ -93,26 +93,26 @@ class BoardServiceTest {
         Map<Integer, List<Pit>> pnp = new HashMap<>();
         pnp.put(0, northPits);
         pnp.put(1, southPits);
-        response.setSouthPits(southPits);
-        response.setNorthPits(northPits);
+        board.setSouthPits(southPits);
+        board.setNorthPits(northPits);
         when(boardDao.getPitList()).thenReturn(pnp);
         when(playerDao.getPlayerById(0)).thenReturn(new Player(0));
         when(boardDao.getBigPit()).thenReturn(pnbp);
-        when(boardDao.haveWinner(response)).thenReturn(true);
+        when(boardDao.haveWinner(board)).thenReturn(true);
         BigPit northKahala = new BigPit();
         BigPit southKahala = new BigPit();
         northKahala.setScore(30);
         southKahala.setScore(42);
-        response.setNorthKahala(northKahala);
-        response.setSouthKahala(southKahala);
+        board.setNorthKahala(northKahala);
+        board.setSouthKahala(southKahala);
 
-        Board response1 = boardService.sowStones(1, 0);
-        assertEquals(response1, Board.getInstance());
+        Board response = boardService.sowStones(1, 0);
+        assertEquals(response, Board.getInstance());
     }
 
     @Test
     void sowStonesLastStoneToKahala() {
-        Board response = Board.getInstance();
+        Board board = Board.getInstance();
 
         List<Pit> northPits = new ArrayList<>();
         List<Pit> southPits = new ArrayList<>();
@@ -134,26 +134,26 @@ class BoardServiceTest {
         Map<Integer, List<Pit>> pnp = new HashMap<>();
         pnp.put(0, northPits);
         pnp.put(1, southPits);
-        response.setSouthPits(southPits);
-        response.setNorthPits(northPits);
+        board.setSouthPits(southPits);
+        board.setNorthPits(northPits);
         when(boardDao.getPitList()).thenReturn(pnp);
         when(playerDao.getPlayerById(1)).thenReturn(new Player(1));
         when(boardDao.getBigPit()).thenReturn(pnbp);
-        when(boardDao.haveWinner(response)).thenReturn(true);
+        when(boardDao.haveWinner(board)).thenReturn(true);
         BigPit northKahala = new BigPit();
         BigPit southKahala = new BigPit();
         northKahala.setScore(1);
         southKahala.setScore(21);
-        response.setNorthKahala(northKahala);
-        response.setSouthKahala(southKahala);
+        board.setNorthKahala(northKahala);
+        board.setSouthKahala(southKahala);
 
-        Board response1 = boardService.sowStones(0, 1);
-        assertEquals(response1, Board.getInstance());
+        Board response = boardService.sowStones(0, 1);
+        assertEquals(response, Board.getInstance());
     }
 
     @Test
     void sowStonesNotLastStone() {
-        Board response = Board.getInstance();
+        Board board = Board.getInstance();
 
         List<Pit> northPits = new ArrayList<>();
         List<Pit> southPits = new ArrayList<>();
@@ -175,26 +175,26 @@ class BoardServiceTest {
         Map<Integer, List<Pit>> pnp = new HashMap<>();
         pnp.put(0, northPits);
         pnp.put(1, southPits);
-        response.setSouthPits(southPits);
-        response.setNorthPits(northPits);
+        board.setSouthPits(southPits);
+        board.setNorthPits(northPits);
         when(boardDao.getPitList()).thenReturn(pnp);
         when(playerDao.getPlayerById(1)).thenReturn(new Player(1));
         when(boardDao.getBigPit()).thenReturn(pnbp);
-        when(boardDao.haveWinner(response)).thenReturn(true);
+        when(boardDao.haveWinner(board)).thenReturn(true);
         BigPit northKahala = new BigPit();
         BigPit southKahala = new BigPit();
         northKahala.setScore(1);
         southKahala.setScore(21);
-        response.setNorthKahala(northKahala);
-        response.setSouthKahala(southKahala);
+        board.setNorthKahala(northKahala);
+        board.setSouthKahala(southKahala);
 
-        Board response1 = boardService.sowStones(0, 1);
-        assertEquals(response1, Board.getInstance());
+        Board response = boardService.sowStones(0, 1);
+        assertEquals(response, Board.getInstance());
     }
 
     @Test
     void sowStonesCaptureOpponents() {
-        Board response = Board.getInstance();
+        Board board = Board.getInstance();
 
         List<Pit> northPits = new ArrayList<>();
         List<Pit> southPits = new ArrayList<>();
@@ -216,20 +216,20 @@ class BoardServiceTest {
         Map<Integer, List<Pit>> pnp = new HashMap<>();
         pnp.put(0, northPits);
         pnp.put(1, southPits);
-        response.setSouthPits(southPits);
-        response.setNorthPits(northPits);
+        board.setSouthPits(southPits);
+        board.setNorthPits(northPits);
         when(boardDao.getPitList()).thenReturn(pnp);
         when(playerDao.getPlayerById(0)).thenReturn(new Player(0));
         when(boardDao.getBigPit()).thenReturn(pnbp);
-        when(boardDao.haveWinner(response)).thenReturn(true);
+        when(boardDao.haveWinner(board)).thenReturn(true);
         BigPit northKahala = new BigPit();
         BigPit southKahala = new BigPit();
         northKahala.setScore(9);
         southKahala.setScore(3);
-        response.setNorthKahala(northKahala);
-        response.setSouthKahala(southKahala);
+        board.setNorthKahala(northKahala);
+        board.setSouthKahala(southKahala);
 
-        Board response1 = boardService.sowStones(1, 0);
-        assertEquals(response1, Board.getInstance());
+        Board response = boardService.sowStones(1, 0);
+        assertEquals(response, Board.getInstance());
     }
 }

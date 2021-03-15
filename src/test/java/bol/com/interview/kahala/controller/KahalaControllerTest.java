@@ -31,15 +31,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.*;
 import java.util.Collections;
+import java.util.Set;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +48,9 @@ import static org.mockito.Mockito.when;
 class KahalaControllerTest {
 
     private MockMvc mvc;
+
+    private static ValidatorFactory validatorFactory;
+    private static Validator validator;
 
     @InjectMocks
     private KahalaController kahalaController;
@@ -56,8 +60,14 @@ class KahalaControllerTest {
     @Mock
     private PlayerService playerService;
 
+    @Mock
+    private ConstraintValidatorContext constraintValidatorContext;
+
     @BeforeEach
     public void setUp(){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+
         mvc = MockMvcBuilders.standaloneSetup(kahalaController)
                 .setControllerAdvice(new ControllerAdvisor())
                 .build();
@@ -132,6 +142,30 @@ class KahalaControllerTest {
         assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
     }
 
+/*    @Test
+    void sowMethodArgumentTypeMismatchException12() throws Exception {
+        given(boardService.sowStones(1231,1231)).willReturn(Board.getInstance());
+        MockHttpServletResponse response = mvc.perform(get("/sow-stones")
+                .param("pit", "1231")
+                .param("player", "1231")
+
+        ).andReturn().getResponse();
+        System.out.println(response);
+
+        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+    }*/
+
+    @Test
+    void sowMethodNumberFormatException() throws Exception {
+        /*given(boardService.sowStones(1,1)).willReturn(new Board());*/
+        MockHttpServletResponse response = mvc.perform(get("/sow-stones")
+                .param("pit", "1!342d")
+                .param("player", "3ABC")
+        ).andReturn().getResponse();
+        System.out.println(response);
+        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+    }
+
     @Test
     void winner() throws Exception {
         given(playerService.winner()).willReturn(new Winner("msg", new Player(0)));
@@ -139,4 +173,5 @@ class KahalaControllerTest {
                 .andReturn().getResponse();
         assertEquals(response.getStatus(), HttpStatus.OK.value());
     }
+
 }

@@ -11,6 +11,7 @@ public class PlayerDao implements IPlayerDao{
 
     @Override
     public Player playFirst() {
+        // system randomly decides first player
         int r = (int) Math.round(Math.random());
         Player player = getPlayers()[r];
         setNextPlayer(player);
@@ -29,6 +30,7 @@ public class PlayerDao implements IPlayerDao{
 
     @Override
     public Player[] getPlayers(){
+        //create two players
         Player[] p = new Player[2];
         p[0] = new Player(0);
         p[1] = new Player(1);
@@ -43,11 +45,11 @@ public class PlayerDao implements IPlayerDao{
     @Override
     public Winner getWinner() {
         Board board = Board.getInstance();
+        //check if at least one list(area) has no stones in their pits
         if(board.emptyPitExists()){
-            //board.calculateScore(board);
             int player1 = board.getNorthKahala().getScore();
             int player2 = board.getSouthKahala().getScore();
-            String message = "";
+            String message;
             Player winner = null;
             if(player1 == player2){
                 message= "Tie!";

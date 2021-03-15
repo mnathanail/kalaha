@@ -38,6 +38,13 @@ class PlayerDaoTest {
     }
 
     @Test
+    void getPlayNext() {
+        pd.setNextPlayer(new Player(1));
+        Player resp = pd.getPlayNext();
+        assertNotNull(resp);
+    }
+
+    @Test
     void getPlayNextEquals() {
         pd.setNextPlayer(new Player(1));
         Player resp = pd.getNextPlayer();
@@ -46,8 +53,8 @@ class PlayerDaoTest {
 
     @Test
     void setPlayNext() {
-        pd.setNextPlayer(new Player(0));
-        Player resp = pd.getNextPlayer();
+        pd.setPlayNext(new Player(0));
+        Player resp = pd.getPlayNext();
         assertNotNull(resp);
     }
 
@@ -168,8 +175,8 @@ class PlayerDaoTest {
 
     @Test
     void getPlayerByIdPlayer1() {
-        Player[] resp = pd.getPlayers();
-        assertNotNull(resp[0]);
+        Player resp = pd.getPlayerById(0);
+        assertNotNull(resp);
     }
 
     @Test

@@ -11,11 +11,5 @@ import javax.validation.constraints.Min;
 @Data
 @AllArgsConstructor
 public class Player {
-
-    //private int player;
-    @Min(0)
-    @Max(1)
     private int id;
-
-
 }

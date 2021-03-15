@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.NotFoundException;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -18,7 +20,10 @@ import java.util.Map;
 public class ControllerAdvisor  {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    @ExceptionHandler({
+            MissingServletRequestParameterException.class,
+            MethodArgumentTypeMismatchException.class
+    })
     public ErrorResponse handleBadRequestException(HttpServletRequest request, Exception e) {
         String message = "";
         if(e instanceof MissingServletRequestParameterException){
