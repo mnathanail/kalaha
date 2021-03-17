@@ -6,7 +6,6 @@ import bol.com.interview.kalaha.model.Player;
 import bol.com.interview.kalaha.model.Winner;
 import bol.com.interview.kalaha.service.BoardService;
 import bol.com.interview.kalaha.service.PlayerService;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,9 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.validation.ConstraintValidatorContext;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -75,7 +71,7 @@ class KalahaControllerTest {
 
     @Test
     void playNext() throws Exception {
-        given(playerService.playNext()).willReturn(new Player(0));
+        /*given(playerService.playNext()).willReturn(new Player(0));*/
         MockHttpServletResponse response = mvc.perform(get("/next-player"))
                 .andReturn().getResponse();
         assertEquals(response.getStatus(), HttpStatus.OK.value());
@@ -83,7 +79,7 @@ class KalahaControllerTest {
 
     @Test
     void sow() throws Exception {
-        given(boardService.sowStones(1,0)).willReturn(new Board());
+        /*given(boardService.sowStones(1,0)).willReturn(new Board());*/
         MockHttpServletResponse response = mvc.perform(get("/sow-stones")
                 .param("pit", "1")
                 .param("player", "0")
@@ -150,7 +146,7 @@ class KalahaControllerTest {
 
     @Test
     void winner() throws Exception {
-        given(playerService.winner()).willReturn(new Winner("msg", new Player(0)));
+        /*given(playerService.winner()).willReturn(new Winner("msg", new Player(0)));*/
         MockHttpServletResponse response = mvc.perform(get("/winner"))
                 .andReturn().getResponse();
         assertEquals(response.getStatus(), HttpStatus.OK.value());
