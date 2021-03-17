@@ -1,0 +1,34 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Kalaha Rules</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        
+        Kalaha is played by two people on a board with 6 pits on each side and two stores, called kalahas.
+        We refer to the two players as North and South.
+
+        In each pit, there are initially 6 stones. A move is made by taking all stones from a pit on your own side
+        and sowing them one-by-one in counterclockwise direction. Your own kalaha is included in the sowing,
+        but the opponent's kalaha is skipped.
+
+        There are three possible outcomes of a turn:
+        <ul>
+            <li>The sowing ends in your own kalaha: It is your turn to move again.</li>
+            <li>The sowing ends in an empty pit on your own side: All stones in the opposite pit
+                (on the opponent's side) along with the last stone of the sowing are placed into your
+                kalaha and your turn is over.
+            </li>
+            <li>Otherwise (the sowing ends on the opponent's side or in a nonempty pit on your own side): Your turn is over.</li>
+        </ul>
+
+        If all pits on your side become empty, the opponent captures all of the remaining stones in his pits.
+        These are placed in the opponent's kalaha and the game is over.
+        You win the game when you have 37 or more stones in your kalaha. If both players end up with 36 stones, the game is tied.
+
+    </div>
+
+</ng-template>
+<a class="nav-link" (click)="open(content)" style="color: #212529;" href="#">Rules</a>

@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #cccccc;
+}
+.table td{
+    border: none;
+}
+.table{
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+h3{
+    color: #212529;
+}

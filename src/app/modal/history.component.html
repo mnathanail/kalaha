@@ -1,0 +1,45 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">History</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>
+            Mancala is one of the oldest two-player strategy games in the world and has been played throughout
+            Asia and Africa for over 7.000 years. Earlier version of Mancala games used primitive tools constructed
+            of wood or clay, or the game board were carved in stone.
+        </p>
+        <p>
+            It's origins are rooted in ancient Egypt. Stone Mancala boards from 1400BC have been found carved into
+            the roofs of Kurna temples in Memphis, Thebes and Luxor. The game spread from Egypt to many parts of
+            Africa and then to the Middle East. Proof was found in Palmyra in Syria.
+        </p>
+        <p>
+            In the agora of Izmir, a Mancala board was found which proofs that the Romans and ancient Greeks also
+            played the game.These versions of the game typically contain holes which house marbles or rocks,
+            seeds or beans, or other small round objects called “seeds”. The number of seeds and the number
+            of holes featured depends on the type of game.
+            In certain West-African dialects the holes in the board are referred to as warri or awari
+            and in those cultures the game is called "Wari".
+        </p>
+        <p>
+            Islamic cultures name the game with respect to the physical action that takes place during the game
+            calling the game "mancala" (The word "mancala" means to move in Arabic).
+        </p>
+        <p>
+            Count-and-Capture Games were never very popular in Europe, except in the Baltic area, where they loved
+            the game Bohnenspiel. But still mancala boards were found in ancient castles in Germany, Greece, Bosnia and Serbia.
+            Mancala is played today primarily in Africa, the Middle East, Asia and the Caribbean area.
+            The USA has also a larger mancala playing population.
+        </p>
+        <p>
+            There are a number of commercial versions of the game. The first commercial version was published
+            in the United States in 1891 by the Milton Bradley Company under the name of Chuba.
+            A wooden version of the game was produced in the 1950s by the Kalah Game Company, Holbrook.
+        </p>
+    </div>
+
+</ng-template>
+<a class="nav-link" (click)="open(content)" style="color: #212529;" href="#">History</a>
