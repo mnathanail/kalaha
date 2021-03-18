@@ -23,4 +23,4 @@ from the `pom.xml` with the version you have installed.
 Alternatively, open `IntelliJ`, `File -> Open` load the project and run the server!
 
 ## 2. Access
-You can access it here: http://localhost:8080
+Please install the frontend project in order to have the full game experience.
