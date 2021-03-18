@@ -2,6 +2,7 @@ package bol.com.interview.kalaha.service;
 
 import bol.com.interview.kalaha.dao.BoardDao;
 import bol.com.interview.kalaha.dao.PlayerDao;
+import bol.com.interview.kalaha.exception.ControllerAdvisor;
 import bol.com.interview.kalaha.model.BigPit;
 import bol.com.interview.kalaha.model.Board;
 import bol.com.interview.kalaha.model.Pit;
@@ -18,8 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
@@ -66,6 +66,17 @@ class BoardServiceTest {
         when(boardDao.haveWinner(board)).thenReturn(false);
         Board response = boardService.sowStones(1, 0);
         assertEquals(response, board);
+    }
+
+
+    @Test
+    void sowStonesInNoInitializedBoard() {
+        assertThrows(NullPointerException.class,
+        () -> {
+            when(boardDao.getPitList()).thenReturn(null);
+            when(playerDao.getPlayerById(0)).thenReturn(new Player(0));
+            boardService.sowStones(1, 0);
+        });
     }
 
     @Test

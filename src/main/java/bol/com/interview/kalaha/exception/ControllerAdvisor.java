@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -14,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class ControllerAdvisor  {
+public class ControllerAdvisor {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({
@@ -37,7 +38,7 @@ public class ControllerAdvisor  {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ExceptionHandler({ConstraintViolationException.class, NullPointerException.class})
     public ErrorResponse handleInternalServerErrors(HttpServletRequest request, Exception ex) {
         String message = "";
         if(ex instanceof ConstraintViolationException) {
@@ -51,11 +52,16 @@ public class ControllerAdvisor  {
             });
             message = "The " + queryParam[0] + " is wrong";
         }
+        else if(ex instanceof NullPointerException){
+           message = "Please initialize the Board before you start sowing stones! :)";
+        }
 
         return new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ex.getClass().getSimpleName(),
                 message);
     }
+
+
 
 }

@@ -14,7 +14,7 @@
     <name>kahala</name>
     <description>Kahala game in Java for interview at bol.com!</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
         <dependency>

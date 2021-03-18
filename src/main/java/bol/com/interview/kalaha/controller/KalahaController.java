@@ -43,7 +43,7 @@ public class KalahaController {
 
     @GetMapping("/sow-stones")
     @ResponseBody
-    public Board sow(@RequestParam(value = "pit", required = true)   int pit,
+    public Board sow(@Min(value = 0) @Max(value = 5)  @RequestParam(value = "pit", required = true)   int pit,
                      @Min(value = 0) @Max(value = 1)  @RequestParam(value = "player", required = true) int player ){
         return boardService.sowStones(pit, player);
     }

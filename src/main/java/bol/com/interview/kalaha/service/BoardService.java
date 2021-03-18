@@ -21,6 +21,10 @@ public class BoardService implements IBoardService{
         return boardDao.initializeBoard();
     }
 
+    private static final int LAST_PIT_INDEX = 5;
+    private static final int PLAYER_1 = 0;
+    private static final int PLAYER_2 = 1;
+
     @Override
     public Board sowStones(int pit, int player) {
         Board board = Board.getInstance();
@@ -31,6 +35,7 @@ public class BoardService implements IBoardService{
         int pitValue = 0;
         boolean playAgain = false;
         int nextPlayer = 0;
+
         int stones = boardDao.getPitList().get(player).get(pit).getValue();
 
         boardDao.getPitList().get(player).get(pit).setValue(0);
@@ -51,8 +56,8 @@ public class BoardService implements IBoardService{
                     break;
                 }
                 // if was not the last, index it for the opponent's
-                nextPit = 5;
-                currentPlayer = currentPlayer == 0 ? 1 : 0;
+                nextPit = LAST_PIT_INDEX;
+                currentPlayer = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
             }
             pitValue = boardDao.getPitList().get(currentPlayer).get(nextPit).getValue();
             boardDao.getPitList().get(currentPlayer).get(nextPit).setValue(pitValue + 1);
@@ -71,7 +76,7 @@ public class BoardService implements IBoardService{
             pitValue = boardDao.getPitList().get(playerId).get(last).getValue();
             if (pitValue == 1) {
                 // who is the opponent
-                opponent = currentPlayer == 0 ? 1 : 0;
+                opponent = currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
                 // get their stones
                 opponentStones = boardDao.getPitList().get(opponent).get(5 - last).getValue();
                 // get and set BigPit (Kalaha) score
@@ -90,7 +95,7 @@ public class BoardService implements IBoardService{
             nextPlayer = playerId;
         }
         else{
-            nextPlayer = playerId == 0 ? 1 : 0;
+            nextPlayer = playerId == PLAYER_1 ? PLAYER_2 : PLAYER_1;
         }
 
         playerDao.setPlayNext(playerDao.getPlayerById(nextPlayer));
@@ -104,7 +109,6 @@ public class BoardService implements IBoardService{
 
         return board;
     }
-
 
     private void updateKahalaScore(int player){
         int kahalaValue = boardDao.getBigPit().get(player).getScore();
