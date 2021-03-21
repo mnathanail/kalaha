@@ -53,7 +53,7 @@ public class ControllerAdvisor {
             message = "The " + queryParam[0] + " is wrong";
         }
         else if(ex instanceof NullPointerException){
-           message = "Please initialize the Board before you start sowing stones! :)";
+           message = "Please initialize the Board first";
         }
 
         return new ErrorResponse(
