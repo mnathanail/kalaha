@@ -8,11 +8,11 @@
         <version>2.4.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>bol.com.interview</groupId>
+    <groupId>com.interview</groupId>
     <artifactId>kahala</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>kahala</name>
-    <description>Kahala game in Java for interview at bol.com!</description>
+    <description>Kahala game in Java for interview purposes!</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
